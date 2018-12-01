@@ -1,0 +1,15 @@
+&parameters
+xmin            = 2.   
+xmax            = 16.    
+resolution      = 2     
+Nxx             = 1000  
+Ntt             = 20000 
+courant         = 0.25  
+every_scalar_t  = 10    
+every_array_t   = 100   
+amplitude       = 0.1   
+sigma           = 1.0   
+x0              = 9.  
+Boundaries      = 3     
+Metric          = 1     
+/
