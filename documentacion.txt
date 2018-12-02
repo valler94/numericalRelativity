@@ -1,0 +1,69 @@
+**Simulation of a gravitational pulse in a 2-dimensional simplified space-time (t,x)**
+
+The program "gravitational-wave" aims to perform a numerical calculation of the intensity of the field induced by a 1-dimensional gravitational wave using the *3+1 formulism* of the General Relativity. 
+
+The *3+1 formulism* is based on the descomposition of space-time into 3-dimensional hyper-surfaces with *t = constant*. This can be seen like a foliation, we can superimpose infinite hyper-planes (3-dimensional) to generate a complete 4-dimensional space. It is only necessary that the *leaves* do not intersec each other, this is known as *globally hyperbolic space*, and implies that there are no closed time lines (you can not travel backwards in time). 
+
+The program solves the relativistic wave equation that in a general space takes de form
+\begin{equation}\label{dalambert}
+	\square\Phi = 0
+\end{equation}
+donde
+\begin{equation}\label{RelWave}
+	\square\Phi = \frac{1}{sqrt(-g)}\partial_{\mu}		\left( sqrt(-gg^{\mu\nu})\partial_{\nu}\Phi \right)
+\end{equation}
+
+$\Phi$ is the gravitational field. In our case we are going to solve the relativistic wave equation in 1-spatial dimnesion so $\Phi = \Phi(t,x)$ 
+
+**Inside the program**
+
+The program runs in FORTRAN90(.f90), it is structured in several nested rutines using only 2 own modules "arrays.f90" and "global.f90".
+
+**Modules**
+
+**arrays.f90**: Defines some global variables and dimensional arrangements.
+
+**global.f90**: declares scalar variables that are used in all program routines.
+
+**Subroutines**
+
+**main.f90**: it is the "traditional" first file. Starts the program and manages the parameters and variables. Use "global.f90" module.
+
+**principal.f90**: the "core" of the program. Use "arrays.f90" and "global.f90", call secundaries subroutines (like memory asignament), checks and saves the progress.
+
+**memory.f90**: memory asignament for numerical variables. Use "arrays.f90" and "global.f90". This subroutine is necesary for the compilation, but it is not important for the numerical calculation (only asignes space of memory to the allocated variables)
+
+**mesh.f90**: this subroutine generates the division of the space ande temporal coordinates and defines the minimun units of separation to discretize space and time. Use "arrays.f90" and "global.f90"
+
+**initial.f90**: calculates the parameters of the adapted coordinates according to the defined metric in the spacetime we intended to simulate. In this case only *Minkowski* and *Schwardzchild* metrics are implemented, so this subroutine only need the parameters of the Schwardzchild metric. Defines the pulse of the wave (in this case, gaussian pulse) and then call "constriction_calc.f90" to solve the constriction ecuations (energy and momentum). Use "arrays.f90" and "global.f90".
+
+**constriction_calc.f90**: solve the constriction ecuactiones for the initial parameters using the *finite differences" method, calculating the centra difference and then de forward and backward differences. Use "arrays.f90" and "global.f90".
+
+**save_arrays.f90": this subroutine is not really important, only saves the results in ".x" extesion files, using a couple of dates $(x, \Phi(x))$ for each iteration of time (no save all time iterations, only under several conditions). Use "arrays.f90" and "global.f90".
+
+**RangKut3.f90**: This is the core of numerical calculation. Previus we need the valores of $\Phi(x)$ in each point, calling "numeric.f90". Solves the evolution equations using the *Range-Kuta* method. Use a third RK order, because it is enough to guarantee the convergenceof the method. We need re-solve the constriction with every iteration. Also, this subroutine calls "boundaries_calc.f90". Use "arrays.f90" and "global.f90"
+
+**numeric.f90**: Calculates the evolution of the fields using *second order finite differences* method. Similar to "constriction_calc*. Use "arrays.f90" and "global.f90".
+
+**boundaries.f90**: implemented the boundaries conditions. Absortion, reflexion, periodic and black hole condictions. It is posible we need to improve this subroutine.
+
+**Installation guide**
+
+For the moment we only include the instruction for based linux SO
+
+1. Install the libraries of FORTRAN90:
+2. Install a fortran compiler:
+**Archlinux**: *sudo pacman -S gfortran*
+**Debian/Ubuntu**: *sudo apt-get install gfortran*
+**Fedora**: *su -c "dnf install fcc-gfortran"*
+3. To compile the files use the *Makefile* file. Located at directory where the *Makefile* is, introduce *make*. To compiles manually you need to introduce *gfortran -std=f95 file1.f90 file2.f90 (...) fileN.f90 -o executable_name.
+4. To visualize the graphics u can use *gnuplot* ore similar.
+
+We recomend use the app include to execute and visualize all the results.
+
+
+
+
+
+
+
