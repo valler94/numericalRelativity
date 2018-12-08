@@ -1,4 +1,5 @@
 &parameters
+<<<<<<< HEAD
 xmin            = 2.   
 xmax            = 16.    
 resolution      = 2     
@@ -13,3 +14,19 @@ x0              = 9.
 Boundaries      = 3     
 Metric          = 1     
 /
+=======
+xmin = 2.0
+xmax = 16.0
+resolution = 2
+Nxx = 1000
+Ntt = 20000
+courant = 0.25
+every_scalar_t = 10
+every_array_t = 100
+amplitud = 0.1
+sigma = 1
+x0 = 9.0
+Boundaries = 0
+Metric = 1
+/
+>>>>>>> 2ec38995f875435f684f61e73084a35a73abe6eb
